@@ -1,0 +1,6 @@
+#include "constant.h"
+#include "triangle.h"
+#include "gaussian.h"
+#include "epanechnikov.h"
+#include "quartic.h"
+#include "triweight.h"
