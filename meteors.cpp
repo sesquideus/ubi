@@ -18,14 +18,14 @@ int main(int argc, char * argv[]) {
         return 1;
     }
 
-    MeteorMetric metric(1, 0, 0, 1);
+    MeteorMetric metric(1, 0, 0, 0);
 
-    MeteorMesh<double, VPImplicitTree> mesh(metric,
-        MeshLimits<double>(-90, 90, 360),
-        MeshLimits<double>(0, 360, 720),
-        MeshLimits<double>(20000, 20000, 1),
-        MeshLimits<double>(1, 1, 1),
-        MeshLimits<double>(261.5, 261.5, 1)
+    MeteorMesh<VPImplicitTree> mesh(metric,
+        MeshLimits(-90, 90, 720),
+        MeshLimits(0, 360, 1440),
+        MeshLimits(20000, 20000, 1),
+        MeshLimits(1, 1, 1),
+        MeshLimits(0, 360, 1)
     );
 /*
     MeteorMesh<double, VPImplicitTree> perseids(metric,
@@ -40,10 +40,10 @@ int main(int argc, char * argv[]) {
     dataset.load_tsv(argv[1]);
 
     QuarticKernel kernel;
-    BandwidthNearestSelector<Meteor, double> selector(20);
+    BandwidthNearestSelector<Meteor> selector(20);
 
     dataset.kde(metric, mesh, selector, kernel);
-    mesh.write_values("out/geminids.bin");
+    mesh.write_values("out/timeless.bin");
 
     return 0;
 }

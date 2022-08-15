@@ -7,7 +7,7 @@ from pathlib import Path
 from matplotlib import pyplot as plt
 import matplotlib
 
-from utils import ReadableDir, WriteableDir
+from utils.utils import ReadableDir, WriteableDir
 import heatmap
 
 plt.rcParams["font.family"] = "Minion Pro"
@@ -16,11 +16,21 @@ matplotlib.rcParams['mathtext.bf'] = 'Garamond Math:bold'
 matplotlib.use('Agg')
 
 
-declo = 35
-dechi = 70
-ralo = 45
-rahi = 70
-EXTENT = [declo, dechi, ralo, rahi]
+class Limits():
+    def __init__(self, min, max, count):
+        self.min = min
+        self.max = max
+        self.count = count
+
+
+class GridSky():
+    def __init__(self, args):
+        self.dec    = Limits(-90, 90, args.dec)
+        self.ra     = Limits(0, 360, args.ra)
+        self.v      = Limits(0, 0, args.v)
+        self.lnm    = Limits(0, 0, args.lnm)
+        self.lsun   = Limits(0, 359, args.lsun)
+        self.extent = [self.ra.min, self.ra.max, self.dec.min, self.dec.max]
 
 
 class HeatmapSky(heatmap.Heatmap):
@@ -58,7 +68,6 @@ class HeatmapSky(heatmap.Heatmap):
             ax.grid(alpha=1.0)
 #            ax.axis('off')
 
-            #ax.imshow(self.kde[:, :, frame], cmap=self.args.cmap, vmin=0, vmax=10, extent=[0, 360, -90, 90], origin='lower')
             ax.imshow(self.kde[:, :, frame], cmap=self.args.cmap, vmin=0, vmax=10, extent=EXTENT, origin='lower')
             if self.args.points:
                 ax.scatter(self.points['ra'], self.points['dec'], s=0.5, c=self.points['sunlon'] / 360, cmap='hsv')
@@ -75,23 +84,25 @@ class HeatmapSky(heatmap.Heatmap):
         self.kde = np.sum(self.kde, axis=(2, 3))
 
         for frame in range(0, self.args.lsun):
-            fig = plt.figure(figsize=[7.5, 5])
+            fig = plt.figure(figsize=[16, 10])
             ax = fig.subplots(1, 1)
             ax.grid(alpha=0.5, color='gray')
-            ax.set_title(f'The PDF for the Perseid meteor shower, λ = {frame / 5 + 135:.1f}°')
+            #ax.set_title(f'The PDF for the Perseid meteor shower, λ = {frame:.1f}°')
+            ax.set_title(f'The global AMOS meteor PDF')
             ax.set_xlabel('Right ascension / °')
             ax.set_ylabel('Declination / °')
-            ax.set_aspect(1.8)
-            ax.set_xlim(65, 35)
-            ax.set_ylim(45, 65)
-            ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(base=2.5))
-            ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(base=2.5))
+            ax.set_aspect(2)
+            ax.set_xlim(self.grid.ra.min, self.grid.ra.max)
+            ax.set_ylim(self.grid.dec.min, self.grid.dec.max)
+            ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(base=30))
+            ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(base=15))
 
-            im = ax.imshow(self.kde[:, :, frame], cmap=self.args.cmap, vmin=0, vmax=10, extent=EXTENT, origin='lower')
+            im = ax.imshow(self.kde[:, :, frame], cmap=self.args.cmap, vmax=10, extent=EXTENT, origin='lower')
             fig.colorbar(im, ax=ax, shrink=0.8, aspect=30*0.8, label='ln(1 + Â)', pad=0.01)
 
             if self.args.points:
-                ax.scatter(self.points['ra'], self.points['dec'], s=0.5, c=self.points['sunlon'] / 360, cmap='hsv')
+                points = self.points#[np.abs(self.points.sunlon - frame) < 0.5]
+                ax.scatter(points['ra'], points['dec'], s=0.5, c=points['sunlon'] / 360, cmap='hsv')
 
             fig.patch.set_facecolor('white')
             plt.tight_layout(rect=(0, 0, 1.08, 1))

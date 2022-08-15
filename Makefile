@@ -20,6 +20,7 @@ all: vpkde test meteors angles
 	$(GCC) $(CPPFLAGS) $(CDEBUGFLAGS) $(WARNINGFLAGS) -I $(INCLUDES) -c $< -o $@
 
 bin/%: $(OBJECTS) %.o
+	mkdir -p bin
 	$(GCC) $(CPPFLAGS) $(CDEBUGFLAGS) $(WARNINGFLAGS) -I $(INCLUDES) $^ $(LIBS) -o $@
 
 clean:

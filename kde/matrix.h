@@ -53,7 +53,7 @@ public:
         std::vector<real> weights = {}
     ) {
         if (weights.size() != data.size()) {
-            weights = std::vector<real>(1.0, data.size());
+            weights = std::vector<real>(data.size(), 1.0);
         }
 
         // Construct an almost-empty covariance matrix of correct size
