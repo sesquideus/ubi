@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 
 from pathlib import Path
+from dotmap import DotMap
 
 from matplotlib import pyplot as plt
 import matplotlib
@@ -48,6 +49,8 @@ class HeatmapSky(heatmap.Heatmap):
         self.lsun_arg = self.argparser.add_argument('-l', '--lsun', type=int, default=1)
 
     def load_kde(self):
+        self.grid = GridSky(self.args)
+        self.extent = [self.grid.ra.min, self.grid.ra.max, self.grid.dec.min, self.grid.dec.max]
         self.kde = np.fromfile(self.kdefile, sep='', dtype=float)
         self.kde = self.kde.reshape(self.args.dec, self.args.ra, self.args.v, self.args.lnm, self.args.lsun)
         self.kde = np.log(1 + self.kde)
@@ -68,7 +71,7 @@ class HeatmapSky(heatmap.Heatmap):
             ax.grid(alpha=1.0)
 #            ax.axis('off')
 
-            ax.imshow(self.kde[:, :, frame], cmap=self.args.cmap, vmin=0, vmax=10, extent=EXTENT, origin='lower')
+            ax.imshow(self.kde[:, :, frame], cmap=self.args.cmap, vmin=0, vmax=10, extent=self.extent, origin='lower')
             if self.args.points:
                 ax.scatter(self.points['ra'], self.points['dec'], s=0.5, c=self.points['sunlon'] / 360, cmap='hsv')
 
@@ -88,7 +91,7 @@ class HeatmapSky(heatmap.Heatmap):
             ax = fig.subplots(1, 1)
             ax.grid(alpha=0.5, color='gray')
             #ax.set_title(f'The PDF for the Perseid meteor shower, λ = {frame:.1f}°')
-            ax.set_title(f'The global AMOS meteor PDF')
+            ax.set_title(f'The global AMOS meteor PDF, v 30-35 km')
             ax.set_xlabel('Right ascension / °')
             ax.set_ylabel('Declination / °')
             ax.set_aspect(2)
@@ -97,7 +100,7 @@ class HeatmapSky(heatmap.Heatmap):
             ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(base=30))
             ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(base=15))
 
-            im = ax.imshow(self.kde[:, :, frame], cmap=self.args.cmap, vmax=10, extent=EXTENT, origin='lower')
+            im = ax.imshow(self.kde[:, :, frame], cmap=self.args.cmap, vmin=0, extent=self.extent, origin='lower')
             fig.colorbar(im, ax=ax, shrink=0.8, aspect=30*0.8, label='ln(1 + Â)', pad=0.01)
 
             if self.args.points:
