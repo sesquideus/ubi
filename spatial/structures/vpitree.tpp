@@ -58,16 +58,28 @@ void VPImplicitTree<T>::build(
         }
     }
 }
-/*
+
+template<typename T>
+void VPImplicitTree<T>::load(const std::string & filename) {
+    try {
+        std::ifstream in(filename);
+        in.read(reinterpret_cast<char *>(&this->size_), sizeof(this->size_));
+        this->points_.reserve(this->size_);
+        in.read(reinterpret_cast<char *>(this->points_.data()), this->size_ * sizeof(T));
+        this->array_.reserve(this->size_);
+        in.read(reinterpret_cast<char *>(this->array_.data()), this->size_ * sizeof(T));
+    } catch (const std::exception & e) {
+        throw e;
+    }
+}
+
 template<typename T>
 void VPImplicitTree<T>::save(const std::string & filename) const {
-    for (auto && item: this->points_) {
-
-    }
-    for (auto && node: this->array_) {
-        
-    }
-}*/
+    std::ofstream out(filename);
+    out.write(reinterpret_cast<const char *>(this->size_), sizeof(this->size_));
+    out.write(reinterpret_cast<const char *>(this->points_.data()), this->size_ * sizeof(T));
+    out.write(reinterpret_cast<const char *>(this->array_.data()), this->size_ * sizeof(T));
+}
 
 template<typename T>
 QueueItem<T> VPImplicitTree<T>::find_nearest(const T & point) const {

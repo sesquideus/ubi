@@ -22,10 +22,8 @@ public:
     virtual void print(void) const = 0;
     virtual std::string name(void) const = 0;
 
-    /*
     virtual void save(const std::string & filename) const = 0;
     virtual void load(const std::string & filename) = 0;
-    */
 
     // Find a single nearest point (optimized)
     virtual QueueItem<T> find_nearest(const T & point) const = 0;

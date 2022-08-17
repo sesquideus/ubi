@@ -1,5 +1,5 @@
-#ifndef __VPHEAP__
-#define __VPHEAP__
+#ifndef __VPITREE__
+#define __VPITREE__
 
 #include <memory>
 #include <vector>
@@ -41,7 +41,7 @@ template<typename T>
 class VPImplicitTree: public Spatial<T> {
 private:
     std::vector<T> points_;                             // internal storage of points
-    std::vector<ArrayItem<T>> array_;             // actual array
+    std::vector<ArrayItem<T>> array_;                   // actual array
 
     mutable real tau_;
 
@@ -68,10 +68,8 @@ public:
     void print_points(void) const;
     inline std::string name(void) const override { return "VP implicit tree"; };
 
-    /*
     virtual void save(const std::string & filename) const override;
     virtual void load(const std::string & filename) override;
-    */
 
     // Find a single nearest point (optimized)
     QueueItem<T> find_nearest(const T & point) const override;
@@ -85,4 +83,4 @@ public:
 
 #include "vpitree.tpp"
 
-#endif // __VPHEAP__
+#endif // __VPITREE__
