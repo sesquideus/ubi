@@ -21,11 +21,11 @@ int main(int argc, char * argv[]) {
     MeteorMetric metric(1, 0, 0, 1);
 
     MeteorMesh<VPImplicitTree> mesh(metric,
-        MeshLimits(-90, 90, 360),       // dec
-        MeshLimits(0, 360, 720),        // ra
-        MeshLimits(1, 1, 1),            // v
-        MeshLimits(1, 1, 1),            // lnm
-        MeshLimits(0, 360, 360)         // lsun
+        MeshLimits(-90, 90, 360),
+        MeshLimits(0, 360, 720),
+        MeshLimits(20000, 20000, 1),
+        MeshLimits(1, 1, 1),
+        MeshLimits(261.5, 261.5, 1)
     );
 /*
     MeteorMesh<double, VPImplicitTree> perseids(metric,
@@ -40,7 +40,7 @@ int main(int argc, char * argv[]) {
     dataset.load_tsv(argv[1]);
 
     QuarticKernel kernel;
-    BandwidthNearestSelector<Meteor> selector(25);
+    BandwidthNearestSelector<Meteor> selector(20);
 
     dataset.kde(metric, mesh, selector, kernel);
     mesh.write_values("out/full.bin");

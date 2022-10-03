@@ -11,6 +11,8 @@ private:
     T coord_;
 
 public:
+    double value;
+
     MeshNode(unsigned int index, const T & coord):
         index_(index),
         coord_(coord),
@@ -19,8 +21,6 @@ public:
 
     inline unsigned int index(void) const { return this->index_; };
     inline const T & coord(void) const { return this->coord_; };
-
-    double value;
 };
 
 template<typename T>

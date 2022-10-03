@@ -9,7 +9,7 @@ struct MeteorIndex {
     unsigned int dec;
     unsigned int ra;
     unsigned int v;
-    unsigned int lnm;
+    unsigned int mag;
     unsigned int lsun;
 };
 
@@ -20,7 +20,7 @@ private:
     const MeshLimits dec_;
     const MeshLimits ra_;
     const MeshLimits v_;
-    const MeshLimits lnm_;
+    const MeshLimits mag_;
     const MeshLimits lsun_;
 
     unsigned int address(const MeteorIndex & index) const;
@@ -35,7 +35,7 @@ public:
         const MeshLimits & dec,
         const MeshLimits & ra,
         const MeshLimits & v,
-        const MeshLimits & lnm,
+        const MeshLimits & mag,
         const MeshLimits & lsun
     );
 
@@ -43,7 +43,9 @@ public:
     inline real & value(const MeteorIndex & index)       { return this->nodes_[this->address(index)].value; };
     inline real   value(const MeteorIndex & index) const { return this->nodes_[this->address(index)].value; };
 
+    using Mesh<Meteor, Spat>::write_meta;
     using Mesh<Meteor, Spat>::write_values;
+    std::ostream & write_meta(std::ostream & stream) const override;
     std::ostream & write_values(std::ostream & stream) const override;
     virtual void write_values_text(std::ostream & stream) const override;
 };

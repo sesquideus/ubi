@@ -8,7 +8,6 @@ from matplotlib import pyplot as plt
 import matplotlib
 
 from utils.utils import ReadableDir, WriteableDir
-
 import heatmap
 
 plt.rcParams["font.family"] = "Minion Pro"

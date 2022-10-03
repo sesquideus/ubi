@@ -36,7 +36,9 @@ public:
 
     std::vector<QueueItem<MeshNode<T>>> find_within(const T & point, real radius);
 
+    void write_meta(const std::string & filename) const;
     void write_values(const std::string & filename) const;
+    virtual std::ostream & write_meta(std::ostream & stream) const = 0;
     virtual std::ostream & write_values(std::ostream & stream) const = 0;
     virtual void write_values_text(std::ostream & stream) const = 0;
 };

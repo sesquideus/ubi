@@ -16,6 +16,15 @@ void Mesh<T, Spat>::zero(void) {
 }
 
 template<typename T, template<typename> class Spat>
+void Mesh<T, Spat>::write_meta(const std::string & filename) const {
+    std::cout << "Writing out mesh metadata to\"" << filename << "\"" << std::endl;
+    std::ofstream out;
+    out.open(filename);
+    this->write_meta(out);
+    out.close();
+}
+
+template<typename T, template<typename> class Spat>
 void Mesh<T, Spat>::write_values(const std::string & filename) const {
     std::cout << "Writing out mesh values to \"" << filename << "\"" << std::endl;
     std::ofstream out;

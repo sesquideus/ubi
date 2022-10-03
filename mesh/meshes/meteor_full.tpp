@@ -4,22 +4,22 @@ MeteorMesh<Spat>::MeteorMesh(
     const MeshLimits & dec,
     const MeshLimits & ra,
     const MeshLimits & v,
-    const MeshLimits & lnm,
+    const MeshLimits & mag,
     const MeshLimits & lsun
 ):
     Mesh<Meteor, Spat>(metric),
     dec_(dec),
     ra_(ra),
     v_(v),
-    lnm_(lnm),
+    mag_(mag),
     lsun_(lsun)
 {
-    unsigned int size = this->dec_.res() * this->ra_.res() * this->v_.res() * this->lnm_.res() * this->lsun_.res();
+    unsigned int size = this->dec_.res() * this->ra_.res() * this->v_.res() * this->mag_.res() * this->lsun_.res();
     std::cout << "Creating a meteor mesh of " <<
         this->dec_.res() << " × " <<
         this->ra_.res() << " × " <<
         this->v_.res() << " × " <<
-        this->lnm_.res() << " × " <<
+        this->mag_.res() << " × " <<
         this->lsun_.res() << " = " << size << " elements" << std::endl;
     this->nodes_.reserve(size);
 
@@ -39,12 +39,12 @@ unsigned int MeteorMesh<Spat>::address(const MeteorIndex & index) const {
         (index.dec  < 0) || (index.dec  >= this->dec_.res() ) ||
         (index.ra   < 0) || (index.ra   >= this->ra_.res()  ) ||
         (index.v    < 0) || (index.v    >= this->v_.res()   ) ||
-        (index.lnm  < 0) || (index.lnm  >= this->lnm_.res() ) ||
+        (index.mag  < 0) || (index.mag  >= this->mag_.res() ) ||
         (index.lsun < 0) || (index.lsun >= this->lsun_.res())
     ) {
         throw std::range_error("Meteor position mesh: range error");
     } else {*/
-        return ((((index.dec * this->ra_.res()) + index.ra) * this->v_.res() + index.v) * this->lnm_.res() + index.lnm) * this->lsun_.res() + index.lsun;
+        return ((((index.dec * this->ra_.res()) + index.ra) * this->v_.res() + index.v) * this->mag_.res() + index.mag) * this->lsun_.res() + index.lsun;
     /*}*/
 }
 
@@ -53,7 +53,7 @@ void MeteorMesh<Spat>::for_all_nodes(std::function<void(const MeteorIndex & inde
     for (unsigned int di = 0; di < this->dec_.res(); ++di) {
         for (unsigned int ri = 0; ri < this->ra_.res(); ++ri) {
             for (unsigned int vi = 0; vi < this->v_.res(); ++vi) {
-                for (unsigned int mi = 0; mi < this->lnm_.res(); ++mi) {
+                for (unsigned int mi = 0; mi < this->mag_.res(); ++mi) {
                     for (unsigned int li = 0; li < this->lsun_.res(); ++li) {
                         func(MeteorIndex({di, ri, vi, mi, li}));
                     }
@@ -68,7 +68,7 @@ void MeteorMesh<Spat>::for_all_nodes(std::function<void(const MeteorIndex & inde
     for (unsigned int di = 0; di < this->dec_.res(); ++di) {
         for (unsigned int ri = 0; ri < this->ra_.res(); ++ri) {
             for (unsigned int vi = 0; vi < this->v_.res(); ++vi) {
-                for (unsigned int mi = 0; mi < this->lnm_.res(); ++mi) {
+                for (unsigned int mi = 0; mi < this->mag_.res(); ++mi) {
                     for (unsigned int li = 0; li < this->lsun_.res(); ++li) {
                         func(MeteorIndex({di, ri, vi, mi, li}));
                     }
@@ -86,7 +86,7 @@ void MeteorMesh<Spat>::emplace(const MeteorIndex & index) {
             this->dec_.value(index.dec),
             this->ra_.value(index.ra),
             this->v_.value(index.v),
-            this->lnm_.value(index.lnm),
+            this->mag_.value(index.mag),
             this->lsun_.value(index.lsun)
         )
     ));
