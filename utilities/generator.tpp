@@ -5,7 +5,7 @@ Generator::Generator(void):
 {}
 
 
-TwoD<double> GeneratorSpherical::random_uniform_spherical(void) const {
+TwoD GeneratorSpherical::random_uniform_spherical(void) const {
     std::uniform_real_distribution<double> ud(-1, 1);
 
     double x = 1, y = 1, z = 1;
@@ -19,7 +19,7 @@ TwoD<double> GeneratorSpherical::random_uniform_spherical(void) const {
     return {dec, ra};
 }
 
-TwoD<double> GeneratorSpherical::random_cosz_spherical(void) const {
+TwoD GeneratorSpherical::random_cosz_spherical(void) const {
     std::uniform_real_distribution<double> ud(-1, 1);
 
     double x = 1, y = 1, z = 1;
@@ -33,7 +33,7 @@ TwoD<double> GeneratorSpherical::random_cosz_spherical(void) const {
     return {dec, ra};
 }
 
-TwoD<double> GeneratorSpherical::random_cube(void) const {
+TwoD GeneratorSpherical::random_cube(void) const {
     std::uniform_real_distribution<double> ud(-1, 1);
 
     double x = ud(this->mt_);
@@ -44,7 +44,7 @@ TwoD<double> GeneratorSpherical::random_cube(void) const {
     return {dec, ra};
 }
 
-TwoD<double> GeneratorSpherical::random_gaussian_centered(void) const {
+TwoD GeneratorSpherical::random_gaussian_centered(void) const {
     std::normal_distribution<double> nd(0, 1);
 
     double dec = nd(this->mt_) * radians(20);

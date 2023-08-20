@@ -23,14 +23,15 @@ int main() {
     GeneratorSpherical gen;
     std::cout << std::fixed;
 
+    std::vector<TwoD> twod;
     for (unsigned int i = 0; i < COUNT; ++i) {
         twod.push_back(gen.random_cube());
     }
 
-    auto metric = spherical2D;
+    auto metric = Spherical();
     std::cout << "Building a KDE" << std::endl;
 
-    KDE<TwoD, double, VPImplicitTree> kde(metric, twod);
+    KDE<TwoD, VPImplicitTree> kde(metric, twod);
     std::cout << "KDE complete" << std::endl;
 
     constexpr int resolution_x = 720;
@@ -38,7 +39,7 @@ int main() {
     constexpr double extent_x = M_PI;
     constexpr double extent_y = M_PI / 2;
 
-    CartesianMesh2D<double, VPHeap> meshheap(metric, {resolution_x, resolution_y}, {-extent_x, -extent_y}, {extent_x, extent_y});
+    CartesianMesh2D<VPImplicitTree> meshheap(metric, {resolution_x, resolution_y}, {-extent_x, -extent_y}, {extent_x, extent_y});
 
 //    kde.evaluate_online(mesh, GaussianKernel(), 0.05);
     kde.evaluate_points(meshheap, QuarticKernel(), BandwidthNearest<TwoD, double>(kde.spatial(), 200));

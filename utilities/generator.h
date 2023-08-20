@@ -15,10 +15,10 @@ public:
 
 class GeneratorSpherical: public Generator {
 public:
-    TwoD<double> random_uniform_spherical(void) const;
-    TwoD<double> random_cosz_spherical(void) const;
-    TwoD<double> random_cube(void) const;
-    TwoD<double> random_gaussian_centered(void) const;
+    TwoD random_uniform_spherical(void) const;
+    TwoD random_cosz_spherical(void) const;
+    TwoD random_cube(void) const;
+    TwoD random_gaussian_centered(void) const;
 };
 
 template<typename Real>
