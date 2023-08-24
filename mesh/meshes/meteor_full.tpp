@@ -93,6 +93,12 @@ void MeteorMesh<Spat>::emplace(const MeteorIndex & index) {
 }
 
 template<template<typename> class Spat>
+std::ostream & MeteorMesh<Spat>::write_meta(std::ostream & stream) const {
+    // Implement this later
+    return stream;
+}
+
+template<template<typename> class Spat>
 std::ostream & MeteorMesh<Spat>::write_values(std::ostream & stream) const {
     std::cout << "Writing out a meteor position mesh..." << std::endl;
     this->for_all_nodes([&](const MeteorIndex & index) -> void {

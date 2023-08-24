@@ -54,6 +54,13 @@ public:
     }
 };
 
+class Euclidean2Dsqr: public MetricFunctor<TwoD> {
+public:
+    inline real operator()(TwoD a, TwoD b) const {
+        return std::pow(a.x - b.x, 2) + std::pow(a.y - b.y, 2);
+    }
+};
+
 class Euclidean2D: public MetricFunctor<TwoD> {
 public:
     inline real operator()(TwoD a, TwoD b) const {

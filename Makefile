@@ -4,7 +4,7 @@ GCC = g++
 LIBS = -lm -larmadillo -lmlpack -lfmt
 
 CPPFLAGS = -g -flto -O2 -pedantic -std=c++17 -MMD
-WARNINGFLAGS = -Wall -Wextra -Wconversion -fopenmp -Wshadow -Wdouble-promotion -Wfloat-equal -Wnon-virtual-dtor -Woverloaded-virtual -Wfatal-errors
+WARNINGFLAGS = -Wall -Wextra -Wconversion -Wshadow -Wdouble-promotion -Wfloat-equal -Wnon-virtual-dtor -Woverloaded-virtual -Wfatal-errors
 CDEBUGFLAGS = -fno-omit-frame-pointer
 
 INCLUDES = $(CURDIR)
@@ -14,7 +14,7 @@ TEMPLATES = $(wildcard */*.tpp) $(wildcard */*/*.tpp) $(wildcard */*/*/*.tpp)
 OBJECTS = $(patsubst %.cpp,%.o,$(CPPS))
 DEPENDS = $(patsubst %.cpp,%.d,$(CPPS))
 
-all: vpkde test meteors angles
+all: bin/vpkde bin/test bin/meteors bin/angles
 
 %.o: %.cpp $(TEMPLATES) $(HEADERS) Makefile
 	$(GCC) $(CPPFLAGS) $(CDEBUGFLAGS) $(WARNINGFLAGS) -I $(INCLUDES) -c $< -o $@
