@@ -15,7 +15,7 @@ protected:
 
 public:
     Spatial(const MetricFunctor<T> & metric): metric_(metric) {};
-    virtual ~Spatial(void) {};
+    virtual ~Spatial(void) = 0;
 
     inline unsigned int size(void) const { return this->size_; };
 
